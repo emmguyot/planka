@@ -196,6 +196,30 @@ export const selectIsBoardWithIdExists = createSelector(
   ({ Board }, id) => Board.idExists(id),
 );
 
+export const selectActionsForCurrentBoard = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    // TODO...
+    // return Activity.
+    //   .selectNotificationsForCurrentBoard()
+    //   .toModelArray()
+    //   .map((notificationModel) => ({
+    //     ...notificationModel.ref,
+    //     activity: notificationModel.activity && {
+    //       ...notificationModel.activity.ref,
+    //       user: notificationModel.activity.user.ref,
+    //     },
+    //     card: notificationModel.card && notificationModel.card.ref,
+    //   }));
+    return [];
+  },
+);
+
 export default {
   makeSelectBoardById,
   selectBoardById,
@@ -208,4 +232,5 @@ export default {
   selectFilterLabelsForCurrentBoard,
   selectFilterTextForCurrentBoard,
   selectIsBoardWithIdExists,
+  selectActionsForCurrentBoard,
 };

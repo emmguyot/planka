@@ -7,6 +7,7 @@ import { usePopup } from '../../lib/popup';
 
 import Paths from '../../constants/Paths';
 import NotificationsStep from './NotificationsStep';
+import HistoryStep from './HistoryStep';
 import User from '../User';
 import UserStep from '../UserStep';
 
@@ -21,6 +22,7 @@ const Header = React.memo(
     project,
     user,
     notifications,
+    actionHistory,
     isLogouting,
     canEditProject,
     canEditUsers,
@@ -37,6 +39,7 @@ const Header = React.memo(
     }, [canEditProject, onProjectSettingsClick]);
 
     const NotificationsPopup = usePopup(NotificationsStep, POPUP_PROPS);
+    const HistoryPopup = usePopup(HistoryStep, POPUP_PROPS);
     const UserPopup = usePopup(UserStep, POPUP_PROPS);
 
     return (
@@ -78,6 +81,13 @@ const Header = React.memo(
                 <Icon fitted name="users" />
               </Menu.Item>
             )}
+            {project && (
+              <HistoryPopup items={actionHistory}>
+                <Menu.Item className={classNames(styles.item, styles.itemHoverable)}>
+                  <Icon fitted name="clock" />
+                </Menu.Item>
+              </HistoryPopup>
+            )}
             <NotificationsPopup items={notifications} onDelete={onNotificationDelete}>
               <Menu.Item className={classNames(styles.item, styles.itemHoverable)}>
                 <Icon fitted name="bell" />
@@ -108,6 +118,7 @@ Header.propTypes = {
   project: PropTypes.object,
   user: PropTypes.object.isRequired,
   notifications: PropTypes.array.isRequired,
+  actionHistory: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   isLogouting: PropTypes.bool.isRequired,
   canEditProject: PropTypes.bool.isRequired,
