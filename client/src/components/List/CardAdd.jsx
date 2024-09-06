@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import TextareaAutosize from 'react-textarea-autosize';
-import { Button, Form, TextArea } from 'semantic-ui-react';
+import { Button, Checkbox, Form, TextArea } from 'semantic-ui-react';
 import { useDidUpdate, useToggle } from '../../lib/hooks';
 
 import { useClosableForm, useForm } from '../../hooks';
@@ -18,6 +18,7 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
   const [t] = useTranslation();
   const [data, handleFieldChange, setData] = useForm(DEFAULT_DATA);
   const [focusNameFieldState, focusNameField] = useToggle();
+  const [chkAutoOpen, setAutoOpen] = useState(false);
 
   const nameField = useRef(null);
 
@@ -70,8 +71,8 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
   const [handleFieldBlur, handleControlMouseOver, handleControlMouseOut] = useClosableForm(onClose);
 
   const handleSubmit = useCallback(() => {
-    submit();
-  }, [submit]);
+    submit(chkAutoOpen);
+  }, [submit, chkAutoOpen]);
 
   useEffect(() => {
     if (isOpened) {
@@ -112,6 +113,7 @@ const CardAdd = React.memo(({ isOpened, onCreate, onClose }) => {
           onMouseOver={handleControlMouseOver}
           onMouseOut={handleControlMouseOut}
         />
+        <Checkbox type="checkbox" label={t('common.openDetails')} checked={chkAutoOpen} />
       </div>
     </Form>
   );
