@@ -10,10 +10,12 @@ const mapStateToProps = (state) => {
   const currentUser = selectors.selectCurrentUser(state);
   const currentProject = selectors.selectCurrentProject(state);
   const notifications = selectors.selectNotificationsForCurrentUser(state);
+  const actionHistory = selectors.selectActionsForCurrentBoard(state);
   const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
 
   return {
     notifications,
+    actionHistory,
     isLogouting,
     project: currentProject,
     user: currentUser,

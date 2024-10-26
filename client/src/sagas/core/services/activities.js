@@ -36,6 +36,27 @@ export function* fetchActivitiesInCurrentCard() {
   yield call(fetchActivities, cardId);
 }
 
+export function* fetchActivitiesForBoard(boardId) {
+  yield put(actions.fetchActivitiesFromBoard(boardId));
+
+  let activities;
+  let users;
+
+  try {
+    ({
+      items: activities,
+      included: { users },
+    } = yield call(request, api.getActivitiesFromBoard, boardId, {
+      limit: 10, // TODO change
+    }));
+  } catch (error) {
+    yield put(actions.fetchActivitiesFromBoardfailure(boardId, error));
+    return;
+  }
+
+  yield put(actions.fetchActivitiesFromBoard.success(boardId, activities, users));
+}
+
 export function* toggleActivitiesDetails(cardId, isVisible) {
   yield put(actions.toggleActivitiesDetails(cardId, isVisible));
 

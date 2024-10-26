@@ -24,6 +24,30 @@ fetchActivities.failure = (cardId, error) => ({
   },
 });
 
+const fetchActivitiesFromBoard = (boardId) => ({
+  type: ActionTypes.ACTIVITIES_FROM_BOARD_FETCH,
+  payload: {
+    boardId,
+  },
+});
+
+fetchActivitiesFromBoard.success = (boardId, activities, users) => ({
+  type: ActionTypes.ACTIVITIES_FROM_BOARD_FETCH__SUCCESS,
+  payload: {
+    boardId,
+    activities,
+    users,
+  },
+});
+
+fetchActivitiesFromBoard.failure = (boardId, error) => ({
+  type: ActionTypes.ACTIVITIES_FROM_BOARD_FETCH__FAILURE,
+  payload: {
+    boardId,
+    error,
+  },
+});
+
 const toggleActivitiesDetails = (cardId, isVisible) => ({
   type: ActionTypes.ACTIVITIES_DETAILS_TOGGLE,
   payload: {
