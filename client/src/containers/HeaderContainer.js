@@ -10,17 +10,19 @@ const mapStateToProps = (state) => {
   const currentUser = selectors.selectCurrentUser(state);
   const currentProject = selectors.selectCurrentProject(state);
   const notifications = selectors.selectNotificationsForCurrentUser(state);
-  const actionHistory = selectors.selectActionsForCurrentBoard(state);
+  const currentBoard = selectors.selectCurrentBoard(state);
   const isCurrentUserManager = selectors.selectIsCurrentUserManagerForCurrentProject(state);
+  const history = selectors.selectCurrentBoardHistory(state);
 
   return {
     notifications,
-    actionHistory,
     isLogouting,
     project: currentProject,
+    board: currentBoard,
     user: currentUser,
     canEditProject: isCurrentUserManager,
     canEditUsers: currentUser.isAdmin,
+    history,
   };
 };
 

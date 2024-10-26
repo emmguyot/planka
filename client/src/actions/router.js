@@ -13,6 +13,7 @@ const handleLocationChange = (
   tasks,
   attachments,
   deletedNotifications,
+  actionHistory,
 ) => ({
   type: ActionTypes.LOCATION_CHANGE_HANDLE,
   payload: {
@@ -28,6 +29,7 @@ const handleLocationChange = (
     tasks,
     attachments,
     deletedNotifications,
+    actionHistory,
   },
 });
 

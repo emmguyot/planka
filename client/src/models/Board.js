@@ -6,6 +6,7 @@ import ActionTypes from '../constants/ActionTypes';
 
 import User from './User';
 import Label from './Label';
+import Activity from './Activity';
 
 export default class extends BaseModel {
   static modelName = 'Board';
@@ -32,6 +33,7 @@ export default class extends BaseModel {
     filterText: attr({
       getDefault: () => '',
     }),
+    actionHistory: many('Activity'),
   };
 
   static reducer({ type, payload }, Board) {
@@ -42,6 +44,15 @@ export default class extends BaseModel {
             ...payload.board,
             isFetching: false,
           });
+
+          if (payload.actionHistory) {
+            const boardModel = Board.withId(payload.board.id);
+            Activity.connect(Board.session);
+            payload.actionHistory.forEach((action) => {
+              // TODO : Voir si mauvaise création
+              boardModel.actionHistory.add(Activity.upsert(action));
+            });
+          }
         }
 
         break;
@@ -65,6 +76,15 @@ export default class extends BaseModel {
         payload.boards.forEach((board) => {
           Board.upsert(board);
         });
+
+        if (payload.actionHistory) {
+          const boardModel = Board.withId(payload.board.id);
+          Activity.connect(Board.session);
+          payload.actionHistory.forEach((action) => {
+            // TODO : Voir si mauvaise création
+            boardModel.actionHistory.add(Activity.upsert(action));
+          });
+        }
 
         break;
       case ActionTypes.SOCKET_RECONNECT_HANDLE__CORE_FETCH:
@@ -92,6 +112,15 @@ export default class extends BaseModel {
         payload.boards.forEach((board) => {
           Board.upsert(board);
         });
+
+        if (payload.actionHistory) {
+          const boardModel = Board.withId(payload.board.id);
+          Activity.connect(Board.session);
+          payload.actionHistory.forEach((action) => {
+            // TODO : Voir si mauvaise création
+            boardModel.actionHistory.add(Activity.upsert(action));
+          });
+        }
 
         break;
       case ActionTypes.USER_TO_BOARD_FILTER_ADD:

@@ -17,6 +17,7 @@ import attachments from './attachments';
 import activities from './activities';
 import commentActivities from './comment-activities';
 import notifications from './notifications';
+import actionHistory from './actionHistory';
 
 export { http, socket };
 
@@ -38,4 +39,5 @@ export default {
   ...activities,
   ...commentActivities,
   ...notifications,
+  ...actionHistory,
 };

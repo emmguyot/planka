@@ -96,6 +96,7 @@ export function* handleProjectManagerCreate(projectManager) {
         cardLabels,
         tasks,
         attachments,
+        actionHistory,
       } = body);
 
       if (body.card) {

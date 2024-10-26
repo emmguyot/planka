@@ -22,6 +22,7 @@ const handleSocketReconnect = (
   attachments,
   activities,
   notifications,
+  actionHistory,
 ) => ({
   type: ActionTypes.SOCKET_RECONNECT_HANDLE,
   payload: {
@@ -41,6 +42,7 @@ const handleSocketReconnect = (
     attachments,
     activities,
     notifications,
+    actionHistory,
   },
 });
 

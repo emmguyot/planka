@@ -40,6 +40,24 @@ export const selectCurrentBoard = createSelector(
   },
 );
 
+export const selectCurrentBoardHistory = createSelector(
+  orm,
+  (state) => selectPath(state).boardId,
+  ({ Board }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return boardModel;
+    }
+
+    return boardModel.actionHistory.toRefArray();
+  },
+);
+
 export const selectMembershipsForCurrentBoard = createSelector(
   orm,
   (state) => selectPath(state).boardId,
@@ -204,19 +222,48 @@ export const selectActionsForCurrentBoard = createSelector(
       return id;
     }
 
-    // TODO...
-    // return Activity.
-    //   .selectNotificationsForCurrentBoard()
-    //   .toModelArray()
-    //   .map((notificationModel) => ({
-    //     ...notificationModel.ref,
-    //     activity: notificationModel.activity && {
-    //       ...notificationModel.activity.ref,
-    //       user: notificationModel.activity.user.ref,
-    //     },
-    //     card: notificationModel.card && notificationModel.card.ref,
-    //   }));
-    return [];
+    const boardModel = Board.withId(id);
+
+    if (!boardModel) {
+      return [];
+    }
+
+    return boardModel.actionHistory.toModelArray().map((notificationModel) => ({
+      ...notificationModel.ref,
+      activity: notificationModel.activity && {
+        ...notificationModel.activity.ref,
+        user: notificationModel.activity.user.ref,
+      },
+      card: notificationModel.card && notificationModel.card.ref,
+    }));
+  },
+);
+
+export const selectNotificationsForCurrentUser = createSelector(
+  orm,
+  (state) => selectCurrentUserId(state),
+  ({ User }, id) => {
+    if (!id) {
+      return id;
+    }
+
+    const userModel = User.withId(id);
+
+    if (!userModel) {
+      return userModel;
+    }
+
+    return userModel
+      .getOrderedUnreadNotificationsQuerySet()
+      .toModelArray()
+      .map((notificationModel) => ({
+        ...notificationModel.ref,
+        activity: notificationModel.activity && {
+          ...notificationModel.activity.ref,
+          user: notificationModel.activity.user.ref,
+        },
+        card: notificationModel.card && notificationModel.card.ref,
+      }));
   },
 );
 
@@ -233,4 +280,5 @@ export default {
   selectFilterTextForCurrentBoard,
   selectIsBoardWithIdExists,
   selectActionsForCurrentBoard,
+  selectCurrentBoardHistory,
 };

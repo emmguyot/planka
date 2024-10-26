@@ -6,6 +6,7 @@ import selectors from '../../../selectors';
 import actions from '../../../actions';
 import api from '../../../api';
 import { createLocalId } from '../../../utils/local-id';
+import mergeRecords from '../../../utils/merge-records';
 
 export function* createBoard(projectId, { import: boardImport, ...data }) {
   const nextData = {
@@ -102,6 +103,17 @@ export function* fetchBoard(id) {
     return;
   }
 
+  const bodyHistory = yield call(request, api.getActionHistory, id);
+
+  const {
+    items: actionHistory2,
+    included: { users: users2, cards: cards2 },
+  } = bodyHistory;
+
+  const actionHistory = actionHistory2;
+  users = mergeRecords(users, users2);
+  cards = mergeRecords(cards, cards2);
+
   yield put(
     actions.fetchBoard.success(
       board,
@@ -115,6 +127,7 @@ export function* fetchBoard(id) {
       cardLabels,
       tasks,
       attachments,
+      actionHistory,
     ),
   );
 }

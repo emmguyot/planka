@@ -9,6 +9,7 @@ import api from '../../../api';
 import { getAccessToken } from '../../../utils/access-token-storage';
 import ActionTypes from '../../../constants/ActionTypes';
 import Paths from '../../../constants/Paths';
+import mergeRecords from '../../../utils/merge-records';
 
 export function* goToRoot() {
   yield put(push(Paths.ROOT));
@@ -67,6 +68,7 @@ export function* handleLocationChange() {
   let tasks;
   let attachments;
   let deletedNotifications;
+  let actionHistory;
 
   switch (pathsMatch.pattern.path) {
     case Paths.BOARDS:
@@ -94,6 +96,17 @@ export function* handleLocationChange() {
           } = yield call(request, api.getBoard, currentBoard.id, true));
         } catch (error) {} // eslint-disable-line no-empty
       }
+
+      const bodyHistory = yield call(request, api.getActionHistory, currentBoard.id);
+
+      const {
+        items: actionHistory2,
+        included: { users: users2, cards: cards2 },
+      } = bodyHistory;
+
+      actionHistory = actionHistory2;
+      users = mergeRecords(users, users2);
+      cards = mergeRecords(cards, cards2);
 
       if (pathsMatch.pattern.path === Paths.CARDS) {
         const notificationIds = yield select(selectors.selectNotificationIdsForCurrentCard);
@@ -131,6 +144,7 @@ export function* handleLocationChange() {
       tasks,
       attachments,
       deletedNotifications,
+      actionHistory,
     ),
   );
 }

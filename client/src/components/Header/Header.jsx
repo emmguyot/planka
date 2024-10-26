@@ -20,12 +20,13 @@ const POPUP_PROPS = {
 const Header = React.memo(
   ({
     project,
+    board,
     user,
     notifications,
-    actionHistory,
     isLogouting,
     canEditProject,
     canEditUsers,
+    history,
     onProjectSettingsClick,
     onUsersClick,
     onNotificationDelete,
@@ -81,8 +82,8 @@ const Header = React.memo(
                 <Icon fitted name="users" />
               </Menu.Item>
             )}
-            {project && (
-              <HistoryPopup items={actionHistory}>
+            {project && history && (
+              <HistoryPopup items={history}>
                 <Menu.Item className={classNames(styles.item, styles.itemHoverable)}>
                   <Icon fitted name="clock" />
                 </Menu.Item>
@@ -116,9 +117,10 @@ const Header = React.memo(
 Header.propTypes = {
   /* eslint-disable react/forbid-prop-types */
   project: PropTypes.object,
+  board: PropTypes.object,
   user: PropTypes.object.isRequired,
   notifications: PropTypes.array.isRequired,
-  actionHistory: PropTypes.array.isRequired,
+  history: PropTypes.array.isRequired,
   /* eslint-enable react/forbid-prop-types */
   isLogouting: PropTypes.bool.isRequired,
   canEditProject: PropTypes.bool.isRequired,
@@ -132,6 +134,7 @@ Header.propTypes = {
 
 Header.defaultProps = {
   project: undefined,
+  board: undefined,
 };
 
 export default Header;

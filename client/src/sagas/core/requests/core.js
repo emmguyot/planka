@@ -26,6 +26,7 @@ export function* fetchCore() {
   let cardLabels;
   let tasks;
   let attachments;
+  let actionHistory;
 
   try {
     ({
@@ -41,8 +42,12 @@ export function* fetchCore() {
       cardLabels,
       tasks,
       attachments,
+      actionHistory,
     } = yield call(fetchBoardByCurrentPath));
-  } catch {} // eslint-disable-line no-empty
+  } catch (exception) {
+    // eslint-disable-next-line no-console
+    console.log('Erreur au chargement du board', exception);
+  }
 
   const body = yield call(request, api.getNotifications);
 
@@ -85,6 +90,7 @@ export function* fetchCore() {
     projects: mergeRecords(projects1, projects2),
     boardMemberships: mergeRecords(boardMemberships1, boardMemberships2),
     cards: mergeRecords(cards1, cards2),
+    actionHistory,
   };
 }
 

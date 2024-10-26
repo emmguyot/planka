@@ -30,6 +30,7 @@ export function* handleSocketReconnect() {
   let attachments;
   let activities;
   let notifications;
+  let actionHistory;
 
   try {
     ({
@@ -49,6 +50,7 @@ export function* handleSocketReconnect() {
       attachments,
       activities,
       notifications,
+      actionHistory,
     } = yield call(requests.fetchCore));
   } catch (error) {
     return;
@@ -72,6 +74,7 @@ export function* handleSocketReconnect() {
       attachments,
       activities,
       notifications,
+      actionHistory,
     ),
   );
 }

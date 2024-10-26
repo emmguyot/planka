@@ -100,6 +100,7 @@ export function* handleBoardMembershipCreate(boardMembership) {
         cardLabels,
         tasks,
         attachments,
+        actionHistory,
       } = body);
 
       if (body.card) {

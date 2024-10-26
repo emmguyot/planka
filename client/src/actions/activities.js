@@ -96,6 +96,7 @@ const handleActivityDelete = (activity) => ({
 
 export default {
   fetchActivities,
+  fetchActivitiesFromBoard,
   toggleActivitiesDetails,
   handleActivityCreate,
   handleActivityUpdate,

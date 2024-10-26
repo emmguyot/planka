@@ -50,6 +50,7 @@ fetchBoard.success = (
   cardLabels,
   tasks,
   attachments,
+  actionHistory,
 ) => ({
   type: ActionTypes.BOARD_FETCH__SUCCESS,
   payload: {
@@ -64,6 +65,7 @@ fetchBoard.success = (
     cardLabels,
     tasks,
     attachments,
+    actionHistory,
   },
 });
 

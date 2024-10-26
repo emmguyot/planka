@@ -17,6 +17,7 @@ const initializeCore = (
   attachments,
   activities,
   notifications,
+  actionHistory,
 ) => ({
   type: ActionTypes.CORE_INITIALIZE,
   payload: {
@@ -36,6 +37,7 @@ const initializeCore = (
     attachments,
     activities,
     notifications,
+    actionHistory,
   },
 });
 

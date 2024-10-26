@@ -4,6 +4,7 @@ import request from '../request';
 import selectors from '../../../selectors';
 import api from '../../../api';
 import Paths from '../../../constants/Paths';
+import mergeRecords from '../../../utils/merge-records';
 
 export function* fetchBoardByCurrentPath() {
   const pathsMatch = yield select(selectors.selectPathsMatch);
@@ -20,6 +21,7 @@ export function* fetchBoardByCurrentPath() {
   let cardLabels;
   let tasks;
   let attachments;
+  let actionHistory;
 
   if (pathsMatch) {
     let boardId;
@@ -48,6 +50,19 @@ export function* fetchBoardByCurrentPath() {
           attachments,
         },
       } = yield call(request, api.getBoard, boardId, true));
+
+      const bodyHistory = yield call(request, api.getActionHistory, boardId);
+
+      const {
+        items: actionHistory2,
+        included: { users: users2, cards: cards2 },
+      } = bodyHistory;
+
+      actionHistory = actionHistory2;
+      users = mergeRecords(users, users2);
+      cards = mergeRecords(cards, cards2);
+    } else {
+      actionHistory = null;
     }
   }
 
@@ -63,7 +78,8 @@ export function* fetchBoardByCurrentPath() {
     cardLabels,
     tasks,
     attachments,
-    project: projects[0],
+    actionHistory,
+    project: projects ? projects[0] : null,
   };
 }
 

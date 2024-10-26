@@ -51,10 +51,14 @@ module.exports = {
     const userIds = sails.helpers.utils.mapRecords(actions, 'userId', true);
     const users = await sails.helpers.users.getMany(userIds, true);
 
+    const cardIds = sails.helpers.utils.mapRecords(actions, 'cardId');
+    const cards = await sails.helpers.cards.getMany(cardIds);
+
     return {
       items: actions,
       included: {
         users,
+        cards,
       },
     };
   },
