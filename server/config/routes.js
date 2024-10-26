@@ -125,6 +125,7 @@ module.exports.routes = {
   'DELETE /api/attachments/:id': 'attachments/delete',
 
   'GET /api/cards/:cardId/actions': 'actions/index',
+  'GET /api/board/:boardId/actions': 'actions/get-all',
 
   'POST /api/cards/:cardId/comment-actions': 'comment-actions/create',
   'PATCH /api/comment-actions/:id': 'comment-actions/update',
